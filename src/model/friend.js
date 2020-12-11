@@ -12,6 +12,7 @@ const friendSchema=new mongoose.Schema({
 })
 
 
+
 const friend=mongoose.model('Friend',friendSchema)
 
 module.exports=friend;
