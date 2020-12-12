@@ -1,9 +1,10 @@
 const mongoose=require('mongoose')
+require('mongoose-double')(mongoose);
 
 const TotalSchema=new mongoose.Schema({
-    amount={
-        type:mongoose.Decimal128,
-        required:true,
+    amount:{
+        type:mongoose.Schema.Types.Double,
+        default:0
     },
     userId:{
         type:mongoose.Schema.Types.ObjectId,

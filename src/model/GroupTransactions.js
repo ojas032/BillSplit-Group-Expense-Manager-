@@ -1,21 +1,21 @@
 const mongoose=require('mongoose')
-require('mongoose-double')(mongoose);
+require('mongoose-double')(mongoose)
 
-const TransactionSchema=new mongoose.Schema({
+const GroupTranSchema=new mongoose.Schema({
     amount:{
         type:mongoose.Schema.Types.Double,
-        default:0
+        required:true
     },
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         required:true
     },
-    friendId:{
+    groupId:{
         type:mongoose.Schema.Types.ObjectId,
         required:true
     }
 })
 
-const Transaction=mongoose.model('Transaction',TransactionSchema)
+const GroupTransaction=mongoose.model('GroupTranscation',GroupTranSchema)
 
-module.exports=Transaction
+module.exports=GroupTransaction

@@ -5,8 +5,13 @@ const Transaction=require('../model/Transaction')
 const auth=require('../middleware/auth')
 const Total=require('../model/Total')
 
+
 router.post('/addtransaction',auth,async (req,res)=>{
     try{
+
+        var total=await Total.findOne({userId:req.user._id,friendId:req.body._id}).exec() 
+        var total1=await Total.findOne({userId:req.body._id,friendId:req.user._id}).exec()
+
         const amount=req.body.amount
         var transaction=new Transaction({
             amount:req.body.amount,
@@ -24,9 +29,6 @@ router.post('/addtransaction',auth,async (req,res)=>{
 
         await transaction.save()
 
-        var total=Total.find({userId:req.user._id,friendId:req.body._id}).exec() 
-        var total1=Total.find({userId:req.body._id,friendId:req.user._id}).exec()
-
         if(!total){
             total=new Total({
                 amount:req.body.amount,
@@ -41,21 +43,19 @@ router.post('/addtransaction',auth,async (req,res)=>{
                 userId:req.body._id,
                 friendId:req.user._id
             })
-
             await total.save()
         }
-
         else{
 
             var amt=total.amount
-            console.log(amt)
+            amt+=req.body.amount
+            await total.update({amount:amt})
+
             var amt1=total1.amount
-            console.log(amt1)
+            amt1-=req.body.amount
+            await total1.update({amount:amt1})
 
         }
-        
-
-
         res.status(201).send('OK')
 
     }
@@ -63,6 +63,7 @@ router.post('/addtransaction',auth,async (req,res)=>{
         res.status(401).send("Network error")
     }
 })
+
 
 
 router.post('/transaction',auth,async (req,res)=>{
@@ -73,6 +74,18 @@ router.post('/transaction',auth,async (req,res)=>{
     }
     catch(e){
         res.status(401).send("error")
+    }
+})
+
+
+//get the total balance to a particular person
+router.post('/total',auth,async (req,res)=>{
+    try{
+        const amount=await Total.find({userId:req.user._id,friendId:req.body._id}).exec()
+        res.status(201).send(amount)
+    }
+    catch(e){
+        res.status(401).send(e)
     }
 })
 

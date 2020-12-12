@@ -1,20 +1,21 @@
 const express = require('express')
 const app = express()
 const User=require('./src/model/User')
-const Group=require('./src/model/Create_Group')
 const AddFriend=require('./src/model/friend')
 const auth=require('./src/middleware/auth')
 const UserRouter=require('./src/router/User')
 const FriendRouter=require('./src/router/Friend')
 const RegularTransactions=require('./src/router/RegularTransactions')
+const GroupMappingRouter=require('./src/router/Group')
 require('./src/db/mongoose')
-const port = 3002
+const port = 3001
 
 
 app.use(express.json())
 app.use(UserRouter)
 app.use(FriendRouter)
 app.use(RegularTransactions)
+app.use(GroupMappingRouter)
 
 //Create group
 app.post('/creategroup',auth,async (req,res)=>{

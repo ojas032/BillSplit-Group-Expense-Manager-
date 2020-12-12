@@ -1,20 +1,21 @@
 const mongoose=require('mongoose')
+require('mongoose-double')(mongoose)
 
 const GroupMappingSchema=new mongoose.Schema({
-    userid:{
-        type:mongoose.ObjectId,
-        required:true
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
     },
-    groupid:{
-        type:mongoose.ObjectId,
+    groupId:{
+        type:mongoose.Schema.Types.ObjectId,
         required:true
     },
     spent:{
-        type:Number,
+        type:mongoose.Schema.Types.Double,
         default:0
     },
     paid:{
-        type:Number,
+        type:mongoose.Schema.Types.Double,
         default:0
     },
     createdon:{
