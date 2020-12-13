@@ -58,7 +58,40 @@ router.post('/users',async (req,res)=>{
  
      }
  })
+
+//Logout from a logined device
+router.get('/users/logout',auth,async (req,res)=>{  
+    try{
+        const user=req.user
+        for(var i=0;i<user.tokens.length;i++){
+            if(user.tokens[i].token==req.token){
+                user.tokens.splice(i,1)
+            }
+        }
+        await user.save()
+        res.status(200).send(user)
+    }
+    catch(e){
+
+        res.status(400).send(e)
+    }
+})
+
+
+ //Logout from all the devices
+
  
+router.get('/user/logoutall',auth,async (req,res)=>{
+    try{
+        const user=req.user
+        user.tokens=[],
+        await user.save()
+        res.status(200).send("Logged out of all devices")
+    }
+    catch(e){
+        res.status(400).send(e)
+    }
+})
 
 
 
