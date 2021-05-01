@@ -16,7 +16,7 @@ router.post('/users',async (req,res)=>{
      res.status(201).send({result,token})
      }
      catch(e){
-         res.status(401).send(e)
+         res.status(400).send(e)
      }
  })
  
@@ -28,7 +28,7 @@ router.post('/users',async (req,res)=>{
          res.status(201).send({user,token})
      }
      catch(e){
-         res.status(401).send(e)
+         res.status(400).send(e)
      }
  })
 
@@ -81,7 +81,7 @@ router.get('/users/logout',auth,async (req,res)=>{
  //Logout from all the devices
 
  
-router.get('/user/logoutall',auth,async (req,res)=>{
+router.get('/users/logoutall',auth,async (req,res)=>{
     try{
         const user=req.user
         user.tokens=[],

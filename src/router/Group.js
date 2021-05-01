@@ -145,7 +145,7 @@ router.post('/group/whooweswho',auth,async (req,res)=>{
             arr.push({userId:members[i].userId})
         }
 
-        console.log(arr)
+        //console.log(arr)
 
         var totalAmount=0
 
@@ -171,41 +171,41 @@ router.post('/group/whooweswho',auth,async (req,res)=>{
         }
 
         var split=totalAmount/(arr.length)
-
+        console.log(split)
         for(var i =0;i<user.length;i++){
             user[i].amount-=split
         }
 
+
         var i=0,j=arr.length-1
 
         user.sort(compare)
+        console.log(user)
 
         var state=[]
 
         while(i<j){
-            console.log(i,j)
-            if(user[j].amount>=user[i].amount){
+           // console.log(i,j)
+            if(Math.abs(user[j].amount)>=Math.abs(user[i].amount)){
                 user[j].amount+=user[i].amount
                 state.push(`${user[i].name} owes ${-user[i].amount} to ${user[j].name}`)
                 user[i].amount=0          
             }
+           
             else{
                 user[i].amount+=user[j].amount
-                state.push(`${user[i].name} owes ${-user[i].amount} to ${user[j].name}`)
+                state.push(`${user[i].name} owes ${user[j].amount} to ${user[j].name}`)
                 user[j].amount=0
+                //console.log(i,j,"Hello")
             }
-            if(user[i].amount==0){
+            if(user[i].amount===0){
                 i++;
             }
-            if(user[j].amount==0){
+            if(user[j].amount===0){
                 j--;
             }
         }
-
-        console.log(state)
-
-
-        res.status(200).send(user)
+        res.status(200).send(state)
     }
     catch(e){
         res.status(400).send(e)
